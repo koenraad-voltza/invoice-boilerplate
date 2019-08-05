@@ -25,6 +25,8 @@ $endif$
 \usepackage{fontspec} 
 \usepackage{xunicode}
 \usepackage{xltxtra}
+\usepackage{graphicx}
+\usepackage{wrapfig}
 
 % converts LaTeX specials (quotes, dashes etc.) to Unicode
 \defaultfontfeatures{Mapping=tex-text}
@@ -92,20 +94,25 @@ $endif$
 % DOCUMENT
 %--------------------------------
 \begin{document}
+\begin{wrapfigure}{r}{0.2\textwidth}
+    %\centering
+    \includegraphics[height=5\baselineskip]{logo}
+\end{wrapfigure}
+
 \small
-\textsc{\textbf{$author$}}
+\textsc{\textbf{$company$}}\\
 $for(from)$
-\textbullet{} \textsc{$from$}
+\textsc{$from$}\\
 $endfor$
 
-\vspace{1em}
-
+\vspace{2cm}
+\textbf{TO:}\\
 \normalsize \sffamily
 $for(to)$
 $to$\\
 $endfor$
 
-\vspace{6em}
+\vspace{1cm}
 
 \begin{flushright}
   \small
@@ -122,28 +129,42 @@ $endfor$
 \STautoround*{2} % Get spreadtab to always display the decimal part
 $if(commasep)$\STsetdecimalsep{,}$endif$ % Use comma as decimal separator
 
-\begin{spreadtab}{{tabular}[t t t]{lp{8.2cm}r}}
+\begin{spreadtab}{{tabular}[t t t t t]{lp{6cm}rrr}}
   \hdashline[1pt/1pt]
-  @ \noalign{\vskip 2mm} \textbf{Pos.} & @ \textbf{Description} & @ \textbf{Prices in $currency$} \\ \hline
+  @ \noalign{\vskip 2mm} \textbf{Pos.} & @ \textbf{Description} & @ \textbf{Qty} & @ \textbf{Unit Price ($currency$)} & @ \textbf{Net Price ($currency$)} \\ \hline
       $for(service)$ @ \noalign{\vskip 2mm} \refstepcounter{pos} \thepos 
         & @ $service.description$ 
         $if(service.details)$\newline \begin{itemize} 
           $for(service.details)$\scriptsize \item $service.details$ 
           $endfor$ \end{itemize}
-          $endif$ & $service.price$\\$endfor$ \noalign{\vskip 2mm} \hline
+          $endif$ & $service.qty$ & $service.price$ & :={[-2,0]*[-1,0]}\\
+          $endfor$ \noalign{\vskip 2mm} \hline
   $if(VAT)$
-    @ & @ \multicolumn{1}{r}{Subtotal:}                & :={sum(c1:[0,-1])} \\ \hhline{~~-}
-    @ & @ \multicolumn{1}{r}{VAT $VAT$\%:}               & $VAT$/100*[0,-1] \\ \hhline{~~-}
+    @ &&& @ \multicolumn{1}{r}{Subtotal:}                & :={sum(e1:[0,-1])} \\ \hhline{~~~~-}
+    @ &&& @ \multicolumn{1}{r}{VAT $VAT$\%:}               & :={$VAT$/100*[0,-1]} \\ \hhline{~~~~-}
   $endif$
-  @ & @ \multicolumn{1}{r}{\textbf{Total:}}   & \textbf{:={$if(VAT)$[0,-1]+[0,-2]$else$sum(c1:[0,-1])$endif$}} \\ \hhline{~~-}
+  @ &&& @ \multicolumn{1}{r}{\textbf{Total:}}   & \textbf{$currency$} \textbf{:={$if(VAT)$[0,-1]+[0,-2] $else$ sum(e1:[0,-1])$endif$}} \\ %\hhline{~~~~-}
 \end{spreadtab}
 
 
-\vspace{15mm}
+\vspace{10mm}
 
 \sffamily
 \small
-$closingnote$
+  Please transfer the due amount to the following bank account within the next $paymentterm$:
+
+$company$\\
+$for(bankinfo)$
+$bankinfo$\\
+$endfor$
+Reference: invoice $invoice-nr$
+
+\vspace{10mm}
+
+
+  We really appreciate your business and look forward to future projects together.
+
+  Best regards,
 
 \medskip
 

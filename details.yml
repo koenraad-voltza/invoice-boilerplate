@@ -1,50 +1,48 @@
 ---
-invoice-nr: 2015-11-04
-author: Max Mustermann
-city: Musterstadt
-from:
-- Musterstraße 37
-- 12345 Musterstadt
+invoice-nr: '000001'
 to:
 - Erika Mustermann
 - Musterallee 1
 - 12345 Musterstadt
 - Germany
-VAT: 20
+VAT: 21
+paymentterm: 14 days  
+currency: EUR
+
 service:
 - description: The first service provided
-  price: 320.00
+  qty: 5.4
+  price: 87.5
   details:
 - description: And another one, with a list of details
   price: 245.00
+  qty: 5.4
   details:
     - Some more detailed explanation
     - of the service provided
     - Looking good
 - description: The last service provided
   price: 65.00
-
-closingnote: |
-  Please transfer the due amount to the following bank account within the next 14 days:
-   
-    Mustermann GmbH  
-    Kreditinstitut: Deutsche Postbank AG  
-    IBAN: DE18 3601 0043 9999 9999 99  
-    BIC: PBNKDEFF  
-
-    We really appreciate your business and look forward to future projects together.
-
-    Best regards,
-
-# Invoice settings
-currency: EUR
+  qty: 5.4
+company: Voltza bv
+author: Koenraad Van den Eeckhout
+city: Gentbrugge
+from:
+- Heidestraat 88
+- 9050 Gentbrugge
+- invoices@voltza.be
+- Phone number
+bankinfo: 
+- 'Bank: ING Belgium'  
+- 'IBAN: BE48 3631 9019 6327'  
+- 'BIC: BBRUBEBB'
 # commasep: true
 lang: english
 
 # Typography and layout
-seriffont: Hoefler Text
-sansfont: Helvetica Neue
+seriffont: Courier
+sansfont: Courier
 fontsize: 10pt
-geometry: a4paper, left=43mm, right=43mm, top=51mm, bottom=17mm
+geometry: a4paper, left=30mm, right=30mm, top=17mm, bottom=17mm
 # letterhead: true # To include personalized letterheads
 ---
