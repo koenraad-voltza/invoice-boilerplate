@@ -1,12 +1,13 @@
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 
-\documentclass[$fontsize$, a4paper]{article}
+\documentclass[12, a4paper]{article}
 
 % LAYOUT
 %--------------------------------
+%\usepackage[utf8]{inputenc}
 \usepackage{geometry} 
-\geometry{$geometry$}
+%\geometry{$geometry$}
 
 % No page numbers
 \pagenumbering{gobble}
@@ -14,11 +15,11 @@
 % Left align
 \usepackage[document]{ragged2e}
 
-$if(letterhead)$
+%$if(letterhead)$
   % To include the letterhead
-  \usepackage{wallpaper}
-  \ULCornerWallPaper{1}{letterhead.pdf}
-$endif$
+%  \usepackage{wallpaper}
+%  \ULCornerWallPaper{1}{letterhead.pdf}
+%$endif$
 
 % TYPOGRAPHY
 %--------------------------------
@@ -31,7 +32,7 @@ $endif$
 % converts LaTeX specials (quotes, dashes etc.) to Unicode
 \defaultfontfeatures{Mapping=tex-text}
 \setromanfont [Ligatures={Common}, Numbers={OldStyle}]{$seriffont$}
-\setsansfont[Scale=0.9]{$sansfont$}
+%\setsansfont[Scale=0.9]{$sansfont$}
 
 % Set paragraph break
 \setlength{\parskip}{1em}
@@ -101,15 +102,17 @@ $endif$
 
 \small
 \textsc{\textbf{$company$}}\\
+\sffamily
 $for(from)$
 \textsc{$from$}\\
 $endfor$
 
 \vspace{2cm}
 \textbf{TO:}\\
-\normalsize \sffamily
+%\normalsize 
+\sffamily
 $for(to)$
-$to$\\
+\textsc{$to$}\\
 $endfor$
 
 \vspace{1cm}
@@ -153,11 +156,11 @@ $if(commasep)$\STsetdecimalsep{,}$endif$ % Use comma as decimal separator
 \small
   Please transfer the due amount to the following bank account within the next $paymentterm$:
 
-$company$\\
+\textsc{\textbf{$company$}}\\
 $for(bankinfo)$
-$bankinfo$\\
+\textsc{$bankinfo$}\\
 $endfor$
-Reference: invoice $invoice-nr$
+\textsc{Reference: invoice $invoice-nr$}
 
 \vspace{10mm}
 

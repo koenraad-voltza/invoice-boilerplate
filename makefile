@@ -1,10 +1,10 @@
 TEX = pandoc
-src = template.tex details.yml
+src = *.yml
 FLAGS = --latex-engine=xelatex
 
 output.pdf : $(src)
-	$(TEX) $(filter-out $<,$^ ) -o $@ --template=$< $(FLAGS)
-
+	$(TEX) $< -o $@ --template=template.tex $(FLAGS)
 .PHONY: clean
 clean :
 	rm output.pdf
+
