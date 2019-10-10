@@ -124,6 +124,9 @@ $endfor$
 
 \vspace{1em}
 
+$if(correction)$
+This invoice is a correction and voids the invoice with number $correction$. We would like to apologise sincerely for the error. Please find the correct amounts below:
+$endif$
 
 \section*{\textsc{Invoice} \textsc{\#$invoice-nr$}}
 \footnotesize
@@ -152,25 +155,34 @@ $if(commasep)$\STsetdecimalsep{,}$endif$ % Use comma as decimal separator
 
 \vspace{10mm}
 
-\sffamily
-\small
+$if(reversechargevat)$
+Under the regulation of the EU we do not charge VAT on services provided to VAT-registered businesses in other member countries. According to the reverse-charge regulation tax liability transfers to the recipient of services.
+$endif$
+
+\begin{minipage}{\textwidth}
+%\sffamily
+%\small
   Please transfer the due amount to the following bank account within the next $paymentterm$:
+
+\vspace{5mm}
 
 \textsc{\textbf{$company$}}\\
 $for(bankinfo)$
 \textsc{$bankinfo$}\\
 $endfor$
 \textsc{Reference: invoice $invoice-nr$}
+\end{minipage}
 
-\vspace{10mm}
+\vspace{5mm}
 
-
+\begin{minipage}{\textwidth}
   We really appreciate your business and look forward to future projects together.
 
   Best regards,
 
-\medskip
+\vspace{5mm}
 
 $author$
+\end{minipage}
 
 \end{document}
