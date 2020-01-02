@@ -30,14 +30,12 @@ def findnextinvoicenr(year, month):
         next = latest + 1
     return next
 
-def updateinvoicenr(file):
-    now = datetime.datetime.now()
-    next = findnextinvoicenumber(now.year, now.month)
+def updateinvoicenr(file, invoicenr):
     with open(file) as f:
          list_doc = yaml.load(f)
     #TODO doesn't seem to work
-    list_doc["invoice-nr"] = str(next)
-    print "added invoice-nr (" + str(next) + ") to: " + file
+    list_doc["invoice-nr"] = str(invoicenr)
+    print "added invoice-nr (" + str(invoicenr) + ") to: " + file
     with open(file, "w") as f:
         f.write("---\n")
         yaml.dump(list_doc, f)
@@ -45,14 +43,16 @@ def updateinvoicenr(file):
     filename = file.split('/')[-1]
     path = file[:-len(filename)]
     if len(filename.split('-'))>1 and filename.split('-')[0].isdigit():
-        file = path + str(next) + '-' + filename.split('-')[1]
+        file = path + str(invoicenr) + '-' + filename.split('-')[1]
     else:
-        file = path + str(next) + '-' + filename
+        file = path + str(invoicenr) + '-' + filename
     os.system("mv " + path + filename + " " + file)
     return file
 
 def makeinvoice(file):
-    file = updateinvoicenr(file)
+    now = datetime.datetime.now()
+    next = findnextinvoicenr(now.year, now.month)
+    file = updateinvoicenr(file, next)
     makepdf(file)
     composeEmail(file)
 
@@ -88,29 +88,31 @@ if __name__ == "__main__":
                        help='month of the invoices to be generated, eg:  201910')
     parser.add_argument('--single', '-s', action="store", default="", type=str,
                        help='filename of single invoice to be generated, eg:  /home/user/test.yml')
+
     args = parser.parse_args()
     if not (args.single==""):
         makeinvoice(args.single)
-    year = args.month[0:4]
-    month = args.month[4:]
+    else:
+        year = args.month[0:4]
+        month = args.month[4:]
 
-    ## Generate yml files
-    # find all active customers
-    customerlist = companyspecific.customerlist
-    exceptionlist = companyspecific.exceptionlist
+        ## Generate yml files
+        # find all active customers
+        customerlist = companyspecific.customerlist
+        exceptionlist = companyspecific.exceptionlist
 
-    #for customer in customerlist:
-        # find billing information for the customer
-        # get the invoice data
-        # write the yml file
+        #for customer in customerlist:
+            # find billing information for the customer
+            # get the invoice data
+            # write the yml file
 
-    # increment the invoice counter and append to the filename
-    for customer in customerlist:
-        if customer in exceptionlist:
-            continue
-        path = BASEPATH + year + '/' + month + "/outgoing/" + customer + '/'
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                if ".yml" in file:
-                    ## Generate pdf timesheets to go with the invoices
-                    makeinvoice(path + file)
+        # increment the invoice counter and append to the filename
+        for customer in customerlist:
+            if customer in exceptionlist:
+                continue
+            path = BASEPATH + year + '/' + month + "/outgoing/" + customer + '/'
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    if ".yml" in file:
+                        ## Generate pdf timesheets to go with the invoices
+                        makeinvoice(path + file)
