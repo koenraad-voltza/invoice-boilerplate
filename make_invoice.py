@@ -12,13 +12,17 @@ def findnextinvoicenr(year, month):
     # first check in the current folder for existing yml files
     latest = 0
     while (latest == 0):
-        path = BASEPATH + str(year) + '/' + str(month) + "/outgoing/"
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                if ".yml" in file:
-                    if (file[:10].isdigit()):
-                        if int(file[:10])>latest:
-                            latest=int(file[:10])
+        path = BASEPATH + str(year) + '/' + '{0:02d}'.format(month) + "/outgoing/"
+        if os.path.isdir(path):
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    if ".yml" in file:
+                        #print file
+                        if (file[:10].isdigit()):
+                            if int(file[:10])>latest:
+                                latest=int(file[:10])
+        else:
+            print "Path not found: " + path
         month = month - 1
         #Exception for start of new year
         if month == 0:
@@ -57,6 +61,7 @@ def makeinvoice(file):
     composeEmail(file)
 
 def makepdf(file):
+    #TODO: fix bug when time is < 0.01 units
     os.system("cp " + file + " " + TEMPLATEPATH)
     os.system("make")
     #print file
