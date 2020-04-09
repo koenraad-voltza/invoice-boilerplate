@@ -75,10 +75,11 @@ def composeEmail(file):
          list_doc = yaml.load(f)
     email = {"from":companyspecific.fromemail,
         "to": list_doc["to-email"],
-        "cc": list_doc["cc-email"],
         "bcc":companyspecific.bccemail,
         "subject": "Invoice " + str(list_doc["invoice-nr"])
         }
+    if "cc-email" in list_doc.keys():
+        email["cc"]= list_doc["cc-email"]
     email["attachment"] = file[:-3] + "pdf"
     #TODO more attachments
     if  (list_doc["timetracking"]==True):
